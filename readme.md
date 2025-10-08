@@ -1,0 +1,1 @@
+netlify url = "https://poultrymanagementapp.netlify.app"
