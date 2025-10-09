@@ -1,6 +1,7 @@
 // src/js/main.js
-import { initializeUI, loadDashboardData } from './dashBoard.mjs';
+import { initializeUI } from './dashBoard.mjs';
 import { feedModule } from './feedModule.mjs';
+import { growthModule } from './growthModule.mjs';
 
 async function loadPartials() {
   try {
@@ -12,11 +13,11 @@ async function loadPartials() {
     document.getElementById('sidebarContainer').innerHTML = sidebarHtml;
     document.getElementById('headerContainer').innerHTML = headerHtml;
     document.getElementById('footerContainer').innerHTML = footerHtml;
-    console.log('Partials loaded successfully at 07:00 PM WAT on October 08, 2025');
+    console.log('Partials loaded successfully at 04:35 AM WAT on October 09, 2025');
     initializeUI();
-    await loadDashboardData(); // Call after partials
+    await loadDashboardData();
   } catch (error) {
-    console.error('Failed to load partials at 07:00 PM WAT on October 08, 2025:', error);
+    console.error('Failed to load partials at 04:35 AM WAT on October 09, 2025:', error);
     document.getElementById('sidebarContainer').innerHTML = '<div class="sidebar">Sidebar loading failed</div>';
     document.getElementById('headerContainer').innerHTML = '<header>Header loading failed</header>';
     document.getElementById('footerContainer').innerHTML = '<footer>Footer loading failed</footer>';
@@ -41,15 +42,24 @@ export async function loadDashboardData() {
       </div>
     `).join('');
   } else {
-    console.error('Summary cards element not found at 07:00 PM WAT on October 08, 2025');
+    console.error('Summary cards element not found at 04:35 AM WAT on October 09, 2025');
+  }
+
+  // Add growth data
+  const growthData = await growthModule.fetchChickenWeights();
+  const growthElement = document.getElementById('growthData');
+  if (growthElement) {
+    growthElement.innerHTML = `
+      <p>API Data: Average chicken weight ${growthData.growthWeight}kg (${growthData.source})</p>
+    `;
   }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
   await loadPartials();
-  const form = document.getElementById('addDataForm');
-  if (form) {
-    form.addEventListener('submit', (e) => {
+  const addForm = document.getElementById('addDataForm');
+  if (addForm) {
+    addForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const formData = {
         count: document.getElementById('count').value,
@@ -61,10 +71,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         feedModule.addFeedLog(formData);
         loadDashboardData();
       } else {
-        console.error('feedModule or addFeedLog not available at 07:00 PM WAT on October 08, 2025');
+        console.error('feedModule or addFeedLog not available at 04:35 AM WAT on October 09, 2025');
       }
     });
   } else {
-    console.error('Form not found at 07:00 PM WAT on October 08, 2025');
+    console.error('Add form not found at 04:35 AM WAT on October 09, 2025');
+  }
+
+  const growthForm = document.getElementById('trackGrowthForm');
+  if (growthForm) {
+    growthForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const formData = {
+        count: document.getElementById('count').value,
+        growthWeight: document.getElementById('weight').value
+      };
+      if (growthModule && growthModule.trackGrowth) {
+        growthModule.trackGrowth(formData);
+      } else {
+        console.error('growthModule or trackGrowth not available at 04:35 AM WAT on October 09, 2025');
+      }
+    });
+  } else {
+    console.error('Growth form not found at 04:35 AM WAT on October 09, 2025');
   }
 });
