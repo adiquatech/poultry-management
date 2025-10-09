@@ -1,5 +1,5 @@
 // src/js/main.js
-import { initializeUI, loadDashboardData } from './dashboard.mjs';
+import { initializeUI, loadDashboardData } from './dashBoard.mjs';
 import { feedModule } from './feedModule.mjs';
 
 async function loadPartials() {
