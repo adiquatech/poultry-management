@@ -13,11 +13,11 @@ async function loadPartials() {
     document.getElementById('sidebarContainer').innerHTML = sidebarHtml;
     document.getElementById('headerContainer').innerHTML = headerHtml;
     document.getElementById('footerContainer').innerHTML = footerHtml;
-    console.log('Partials loaded successfully at 04:35 AM WAT on October 09, 2025');
+    console.log('Partials loaded successfully');
     initializeUI();
     await loadDashboardData();
   } catch (error) {
-    console.error('Failed to load partials at 04:35 AM WAT on October 09, 2025:', error);
+    console.error('Failed to load partials:', error);
     document.getElementById('sidebarContainer').innerHTML = '<div class="sidebar">Sidebar loading failed</div>';
     document.getElementById('headerContainer').innerHTML = '<header>Header loading failed</header>';
     document.getElementById('footerContainer').innerHTML = '<footer>Footer loading failed</footer>';
@@ -42,7 +42,7 @@ export async function loadDashboardData() {
       </div>
     `).join('');
   } else {
-    console.error('Summary cards element not found at 04:35 AM WAT on October 09, 2025');
+    console.error('Summary cards element not found');
   }
 
   // Add growth data
@@ -71,11 +71,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         feedModule.addFeedLog(formData);
         loadDashboardData();
       } else {
-        console.error('feedModule or addFeedLog not available at 04:35 AM WAT on October 09, 2025');
+        console.error('feedModule or addFeedLog not available');
       }
     });
   } else {
-    console.error('Add form not found at 04:35 AM WAT on October 09, 2025');
+    console.error('Add form not found');
   }
 
   const growthForm = document.getElementById('trackGrowthForm');
@@ -89,10 +89,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (growthModule && growthModule.trackGrowth) {
         growthModule.trackGrowth(formData);
       } else {
-        console.error('growthModule or trackGrowth not available at 04:35 AM WAT on October 09, 2025');
+        console.error('growthModule or trackGrowth not available');
       }
     });
   } else {
-    console.error('Growth form not found at 04:35 AM WAT on October 09, 2025');
+    console.error('Growth form not found');
   }
 });
