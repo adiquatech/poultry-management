@@ -166,6 +166,54 @@ main {
 /* ============================================================================================================================= */
 /*                               GROWTH PAGE STYLING                                         */
 /* ============================================================================================================================= */
+form#signinForm, form#signupForm {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid var(--secondary-color);
+  border-radius: 5px;
+  background-color: var(--background-color);
+}
+form#signinForm h2, form#signupForm h2 {
+  text-align: center;
+  color: var(--primary-color);
+}
+form#signinForm input, form#signupForm input {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 8px;
+  border: 1px solid var(--secondary-color);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+form#signinForm button, form#signupForm button {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+form#signinForm button:hover, form#signupForm button:hover {
+  background-color: var(--accent-color);
+}
+form#signinForm p, form#signupForm p {
+  text-align: center;
+  color: var(--text-color);
+}
+form#signinForm p a, form#signupForm p a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+form#signinForm p a:hover, form#signupForm p a:hover {
+  text-decoration: underline;
+}
+/* ============================================================================================================================= */
+/*                               GROWTH PAGE STYLING                                         */
+/* ============================================================================================================================= */
 .growth-container {
   max-width: 600px;
   margin: 0 auto;

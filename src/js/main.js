@@ -2,7 +2,9 @@
 import { initializeUI } from './dashBoard.mjs';
 import { feedModule } from './feedModule.mjs';
 import { growthModule } from './growthModule.mjs';
+import { login, isAuthenticated, getUser, handleAuthCallback } from './auth.js';
 
+// Load partials
 async function loadPartials() {
   try {
     const [sidebarHtml, headerHtml, footerHtml] = await Promise.all([
@@ -13,9 +15,8 @@ async function loadPartials() {
     document.getElementById('sidebarContainer').innerHTML = sidebarHtml;
     document.getElementById('headerContainer').innerHTML = headerHtml;
     document.getElementById('footerContainer').innerHTML = footerHtml;
-    console.log('Partials loaded successfully');
+    console.log('Partials loaded successfully at 01:22 PM WAT on October 14, 2025');
     initializeUI();
-    await loadDashboardData();
   } catch (error) {
     console.error('Failed to load partials:', error);
     document.getElementById('sidebarContainer').innerHTML = '<div class="sidebar">Sidebar loading failed</div>';
@@ -24,6 +25,7 @@ async function loadPartials() {
   }
 }
 
+// Dashboard
 export async function loadDashboardData() {
   const apiData = await feedModule.fetchEggProduction();
   const localData = feedModule.getFeedLogs();
@@ -45,7 +47,7 @@ export async function loadDashboardData() {
     console.error('Summary cards element not found');
   }
 
-  // Add growth data
+  // Add growth data (optional, moved to growth.js primarily)
   const growthData = await growthModule.fetchChickenWeights();
   const growthElement = document.getElementById('growthData');
   if (growthElement) {
@@ -56,10 +58,21 @@ export async function loadDashboardData() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  await handleAuthCallback();
   await loadPartials();
-  const addForm = document.getElementById('addDataForm');
-  if (addForm) {
-    addForm.addEventListener('submit', (e) => {
+  await updateAuthUI();
+  initializeUI(); // Call after partials
+  if (await isAuthenticated()) {
+    await loadDashboardData();
+  } else {
+    const summaryCards = document.getElementById('summaryCards');
+    if (summaryCards) {
+      summaryCards.innerHTML = '<p>Login to access growth tracking <button onclick="login()">Login</button></p>';
+    }
+  }
+  const form = document.getElementById('addDataForm');
+  if (form) {
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
       const formData = {
         count: document.getElementById('count').value,
@@ -67,32 +80,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         feedConsumed: document.getElementById('feed').value,
         growthWeight: document.getElementById('weight').value
       };
-      if (feedModule && feedModule.addFeedLog) {
-        feedModule.addFeedLog(formData);
-        loadDashboardData();
-      } else {
-        console.error('feedModule or addFeedLog not available');
-      }
+      feedModule.addFeedLog(formData);
+      loadDashboardData();
     });
   } else {
     console.error('Add form not found');
   }
-
-  const growthForm = document.getElementById('trackGrowthForm');
-  if (growthForm) {
-    growthForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const formData = {
-        count: document.getElementById('count').value,
-        growthWeight: document.getElementById('weight').value
-      };
-      if (growthModule && growthModule.trackGrowth) {
-        growthModule.trackGrowth(formData);
-      } else {
-        console.error('growthModule or trackGrowth not available');
-      }
-    });
-  } else {
-    console.error('Growth form not found');
-  }
 });
+
+// User Auth
+async function updateAuthUI() {
+  const loginLink = document.getElementById('loginLink');
+  const signupLink = document.getElementById('signupLink');
+  const logoutLink = document.getElementById('logoutLink');
+  if (await isAuthenticated()) {
+    const user = await getUser();
+    document.querySelector('header h1').textContent = `Welcome, ${user.name}!`;
+    if (loginLink) loginLink.style.display = 'none';
+    if (signupLink) signupLink.style.display = 'none';
+    if (logoutLink) logoutLink.style.display = 'block';
+  } else {
+    if (loginLink) loginLink.style.display = 'block';
+    if (signupLink) signupLink.style.display = 'block';
+    if (logoutLink) logoutLink.style.display = 'none';
+  }
+}
+
+export { updateAuthUI };
