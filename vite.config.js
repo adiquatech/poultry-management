@@ -2,10 +2,10 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  root: '.', // Project root is poultry-management/
-  publicDir: 'public',
+  root: 'src', // Project root is src/ within poultry-management/
+  publicDir: 'public', // Static assets from src/public/
   build: {
-    outDir: 'dist',
+    outDir: '../dist', // Output to poultry-management/dist/ (relative to src/)
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'src/index.html'),
@@ -17,7 +17,8 @@ export default defineConfig({
   },
   server: {
     fs: {
-      allow: ['.']
-    }
-  }
+      allow: ['.', 'src'] // Allow serving from poultry-management/ and src/
+    },
+    open: '/index.html', // Open to index.html on local start
+  },
 });
