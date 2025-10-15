@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  root: 'src/',
+  root: 'src',
   publicDir: 'public',
   build: {
     outDir: '../dist',
@@ -17,7 +17,19 @@ export default defineConfig({
   },
   server: {
     fs: {
-      allow: ['src']
+      allow: ['..', 'src']
+    },
+    open: '/index.html',
+    configureServer({ app }) {
+      app.use((req, res, next) => {
+        if (req.url === '/') {
+          res.writeHead(302, { Location: '/index.html' });
+          res.end();
+        } else {
+          next();
+        }
+      });
     }
   }
 });
+

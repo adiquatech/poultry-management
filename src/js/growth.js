@@ -1,7 +1,6 @@
-// src/js/growth.js
-import { initializeUI } from './dashBoard.mjs';
+// import { initializeUI } from './dashBoard.mjs';
 import { growthModule } from './growthModule.mjs';
-import { login, isAuthenticated, getUser, handleAuthCallback } from './auth.js';
+import { isAuthenticated, getUser, handleAuthCallback } from './auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await handleAuthCallback();

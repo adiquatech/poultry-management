@@ -62,6 +62,6 @@ export async function handleAuthCallback() {
   const client = await createClient();
   if (window.location.search.includes('code=')) {
     await client.handleRedirectCallback();
-    window.history.replaceState({}, document.title, window.location.pathname); // Clear URL
+    window.history.replaceState({}, document.title, window.location.pathname);
   }
 }

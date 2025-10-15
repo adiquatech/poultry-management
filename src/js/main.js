@@ -1,30 +1,32 @@
-// src/js/main.js
+// import
 import { initializeUI } from './dashBoard.mjs';
 import { feedModule } from './feedModule.mjs';
 import { growthModule } from './growthModule.mjs';
-import { login, isAuthenticated, getUser, handleAuthCallback } from './auth.js';
+import { isAuthenticated, getUser, handleAuthCallback } from './auth.js';
+import { collectFormData, saveFormData, displaySavedData } from './addData.js';
 
 // Load partials
 async function loadPartials() {
   try {
+    const basePath = window.location.pathname.includes('growth') ? '../' : '';
     const [sidebarHtml, headerHtml, footerHtml] = await Promise.all([
-      fetch('partials/sidebar.html').then(res => res.text()),
-      fetch('partials/header.html').then(res => res.text()),
-      fetch('partials/footer.html').then(res => res.text())
+      fetch(`${basePath}public/partials/sidebar.html`).then(res => res.text()),
+      fetch(`${basePath}public/partials/header.html`).then(res => res.text()),
+      fetch(`${basePath}public/partials/footer.html`).then(res => res.text())
     ]);
     document.getElementById('sidebarContainer').innerHTML = sidebarHtml;
     document.getElementById('headerContainer').innerHTML = headerHtml;
     document.getElementById('footerContainer').innerHTML = footerHtml;
-    console.log('Partials loaded successfully at 01:22 PM WAT on October 14, 2025');
+    console.log('Partials loaded successfully');
     initializeUI();
   } catch (error) {
     console.error('Failed to load partials:', error);
     document.getElementById('sidebarContainer').innerHTML = '<div class="sidebar">Sidebar loading failed</div>';
     document.getElementById('headerContainer').innerHTML = '<header>Header loading failed</header>';
     document.getElementById('footerContainer').innerHTML = '<footer>Footer loading failed</footer>';
+    console.log('Fetch URLs:', ['public/partials/sidebar.html', 'public/partials/header.html', 'public/partials/footer.html'].map(url => new URL(url, import.meta.url).href));
   }
 }
-
 // Dashboard
 export async function loadDashboardData() {
   const apiData = await feedModule.fetchEggProduction();
@@ -71,21 +73,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
   const form = document.getElementById('addDataForm');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const formData = {
-        count: document.getElementById('count').value,
-        eggsToday: document.getElementById('eggs').value,
-        feedConsumed: document.getElementById('feed').value,
-        growthWeight: document.getElementById('weight').value
-      };
+if (form) {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = collectFormData();
+    if (formData) {
+      saveFormData(formData);
+      displaySavedData();
+      form.reset();
       feedModule.addFeedLog(formData);
       loadDashboardData();
-    });
-  } else {
-    console.error('Add form not found');
-  }
+    }
+  });
+} else {
+  console.error('Add form not found');
+}
 });
 
 // User Auth
