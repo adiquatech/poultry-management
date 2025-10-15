@@ -10,9 +10,9 @@ async function loadPartials() {
   try {
     const basePath = window.location.pathname.includes('growth') ? '../' : '';
     const [sidebarHtml, headerHtml, footerHtml] = await Promise.all([
-      fetch(`${basePath}public/partials/sidebar.html`).then(res => res.text()),
-      fetch(`${basePath}public/partials/header.html`).then(res => res.text()),
-      fetch(`${basePath}public/partials/footer.html`).then(res => res.text())
+      fetch(`${basePath}/public/partials/sidebar.html`).then(res => res.text()),
+      fetch(`${basePath}/public/partials/header.html`).then(res => res.text()),
+      fetch(`${basePath}/public/partials/footer.html`).then(res => res.text())
     ]);
     document.getElementById('sidebarContainer').innerHTML = sidebarHtml;
     document.getElementById('headerContainer').innerHTML = headerHtml;
@@ -24,7 +24,7 @@ async function loadPartials() {
     document.getElementById('sidebarContainer').innerHTML = '<div class="sidebar">Sidebar loading failed</div>';
     document.getElementById('headerContainer').innerHTML = '<header>Header loading failed</header>';
     document.getElementById('footerContainer').innerHTML = '<footer>Footer loading failed</footer>';
-    console.log('Fetch URLs:', ['public/partials/sidebar.html', 'public/partials/header.html', 'public/partials/footer.html'].map(url => new URL(url, import.meta.url).href));
+    console.log('Fetch URLs:', ['/public/partials/sidebar.html', '/public/partials/header.html', '/public/partials/footer.html'].map(url => new URL(url, import.meta.url).href));
   }
 }
 // Dashboard
