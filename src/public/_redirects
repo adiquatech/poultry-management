@@ -1,1 +1,5 @@
-/*    /index.html   200
+/    /index.html   200
+/growth    /growth/index.html   200
+/auth/signin    /auth/signin.html   200
+/auth/signup    /auth/signup.html   200
+/*    /index.html   404
