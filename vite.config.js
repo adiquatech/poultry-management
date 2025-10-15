@@ -5,7 +5,7 @@ export default defineConfig({
   root: 'src', // Project root is src/ within poultry-management/
   publicDir: 'public', // Static assets from src/public/
   build: {
-    outDir: '../dist', // Output to poultry-management/dist/ (relative to src/)
+    outDir: 'dist', // Output to poultry-management/dist/ (relative to src/)
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'src/index.html'),
