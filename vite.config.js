@@ -2,17 +2,17 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  root: 'src', 
-  publicDir: 'public', 
+  root: 'src', // Build root is src/
+  publicDir: '../public', // Point to project root's public/ from src/
   base: '/',
   build: {
-    outDir: 'dist',
+    outDir: 'dist', // Output to src/dist
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        growth: resolve(__dirname, '/growth/index.html'),
-        signin: resolve(__dirname, '/auth/signin.html'),
-        signup: resolve(__dirname, '/auth/signup.html'),
+        index: resolve(__dirname, 'src/index.html'), // Map to dist/index.html
+        growth: resolve(__dirname, 'src/growth/index.html'),
+        signin: resolve(__dirname, 'src/auth/signin.html'),
+        signup: resolve(__dirname, 'src/auth/signup.html'),
       },
     },
   },
