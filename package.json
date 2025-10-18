@@ -6,6 +6,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build --emptyOutDir",
+    "preview": "vite preview",
     "lint": "eslint src/**/*.mjs",
     "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,mjs,css}\"",
     "test": "jest"
